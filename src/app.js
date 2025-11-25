@@ -1,10 +1,10 @@
 // src/app.js
-import express from "express";
+import express from 'express';
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello from acquisitions server!");
+app.get('/', (req, res) => {
+  res.status(200).send('Hello from acquisitions server!');
 });
 
 export default app;
