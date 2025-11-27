@@ -6,28 +6,36 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import authRoutes from '#routes/auth.routes.js';
+import securityMiddleware from '#middleware/security.middleware.js';
 
 const app = express();
 
-// Security headers
+/* ------------------ Security Middlewares ------------------ */
+
+// Helmet → sets secure HTTP headers
 app.use(helmet());
+
+// CORS → configure allowed origins if needed later
 app.use(cors());
 
-// Parse JSON + URL-encoded + Cookies
+/* ------------------ Body Parsing & Cookies ------------------ */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// HTTP Request Logging (Morgan → Winston)
+/* ------------------ Rate Limiting Middleware ------------------ */
+// ⚠️ Usually place AFTER logging, BEFORE routes
+app.use(securityMiddleware);
+
+/* ------------------ HTTP Logging (Morgan → Winston) ------------------ */
 app.use(
   morgan('combined', {
-    stream: {
-      write: message => logger.info(message.trim()),
-    },
+    stream: { write: msg => logger.info(msg.trim()) },
   })
 );
 
-// Test route
+/* ------------------ Base Routes ------------------ */
+
 app.get('/', (req, res) => {
   logger.info('Hello from acquisitions server');
   res.status(200).send('Hello from acquisitions server!');
@@ -47,7 +55,8 @@ app.get('/api', (req, res) => {
     version: '1.0.0',
   });
 });
-// Routes
+
+/* ------------------ API Routes ------------------ */
 app.use('/api/auth', authRoutes);
 
 export default app;

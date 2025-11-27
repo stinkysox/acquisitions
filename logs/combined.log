@@ -87,3 +87,4 @@
 {"level":"info","message":"::ffff:127.0.0.1 - - [27/Nov/2025:06:41:37 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"Thunder Client (https://www.thunderclient.com)\"","service":"acquisitions-api","timestamp":"2025-11-27T06:41:37.841Z"}
 {"level":"info","message":"User signed out successfully","service":"acquisitions-api","timestamp":"2025-11-27T06:41:45.667Z"}
 {"level":"info","message":"::ffff:127.0.0.1 - - [27/Nov/2025:06:41:45 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"Thunder Client (https://www.thunderclient.com)\"","service":"acquisitions-api","timestamp":"2025-11-27T06:41:45.677Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [27/Nov/2025:08:56:47 +0000] \"GET /health HTTP/1.1\" 200 74 \"-\" \"Thunder Client (https://www.thunderclient.com)\"","service":"acquisitions-api","timestamp":"2025-11-27T08:56:47.900Z"}
