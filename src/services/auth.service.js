@@ -27,34 +27,27 @@ export const comparePassword = async (password, hashedPasswordValue) => {
 // 🆕 Create User in DB
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
-    // 🔍 Check if user already exists
-    const existingUser = await db
+    const existing = await db
       .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
+    if (existing.length) throw new Error('User already exists');
 
-    if (existingUser.length > 0) {
-      throw new Error('User with this email already exists');
-    }
+    const hash = await bcrypt.hash(password, 10);
 
-    // 🔐 Hash password before saving
-    const passwordHash = await hashedPassword(password);
-
-    // 🏗 Insert new user
     const [newUser] = await db
       .insert(users)
       .values({
         name,
         email,
-        password: passwordHash,
-        role,
+        password: hash,
       })
-      .returning(); // returns inserted user
-    logger.info(`User created with email: ${email}`);
+      .returning();
+
     return newUser;
-  } catch (error) {
-    logger.error(`Error creating user: ${error}`);
+  } catch (err) {
+    console.error('DB ERROR:', err); // gives real reason
     throw new Error('User creation failed');
   }
 };
