@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "imports": {
+    "#src/*": "./src/*",
     "#config/*": "./src/config/*",
     "#controllers/*": "./src/controllers/*",
     "#middleware/*": "./src/middleware/*",
@@ -25,7 +26,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "dev:docker": "sh ./scripts/dev.sh",
-    "prod:docker": "sh ./scripts/prod.sh"
+    "prod:docker": "sh ./scripts/prod.sh",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -52,15 +54,19 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
+    "superset": "^2.0.1",
     "winson": "^1.0.0",
     "winston": "^3.18.3",
     "zod": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "cross-env": "^10.1.0",
     "drizzle-kit": "^0.31.7",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "eslit": "^6.0.0"
+    "eslit": "^6.0.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }

@@ -6,8 +6,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import authRoutes from '#routes/auth.routes.js';
+import userRoutes from '#routes/users.route.js';
 import securityMiddleware from '#middleware/security.middleware.js';
-
 const app = express();
 
 /* ------------------ Security Middlewares ------------------ */
@@ -58,5 +58,12 @@ app.get('/api', (req, res) => {
 
 /* ------------------ API Routes ------------------ */
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes); // Placeholder for user routes
+
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+  });
+});
 
 export default app;
