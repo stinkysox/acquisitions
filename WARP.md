@@ -5,10 +5,12 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ## Project overview
 
 This is a Node.js/Express HTTP API backed by PostgreSQL on Neon, using the `@neondatabase/serverless` HTTP driver and `drizzle-orm` for database access. The app is designed to run primarily in Docker, with:
+
 - A development stack that uses the Neon Local proxy and ephemeral branches
 - A production stack that connects directly to Neon Cloud via `DATABASE_URL`
 
 Environment-driven configuration is central:
+
 - Example variables live in `.env.example`
 - `.env.development` is used for Docker-based local development with Neon Local
 - `.env.production` is used for Docker-based production deployments
@@ -38,6 +40,7 @@ The Node entrypoint is `src/index.js`, which loads environment variables and sta
 These are the primary ways to work with the app as described in `README.md`.
 
 **Local development (Neon Local + Docker Compose):**
+
 - Prepare environment:
   - Copy `.env.example` to `.env.development` and fill in Neon variables (`NEON_API_KEY`, `NEON_PROJECT_ID`, `PARENT_BRANCH_ID`, `DATABASE_URL` pointing at `neon-local`, etc.)
 - Start the full dev stack (helper script via npm):
@@ -53,6 +56,7 @@ These are the primary ways to work with the app as described in `README.md`.
     - `docker compose -f docker-compose.dev.yml down`
 
 **Production (Neon Cloud + Docker Compose):**
+
 - Prepare environment:
   - Create `.env.production` with your production `DATABASE_URL` from Neon and any other required env vars
 - Start the production stack (helper script via npm):
@@ -66,6 +70,7 @@ These are the primary ways to work with the app as described in `README.md`.
   - Stop: `docker compose -f docker-compose.prod.yml down`
 
 The Dockerfile defines a multi-stage build:
+
 - `development` stage runs `npm run dev`
 - `production` stage runs `npm start`
 
@@ -83,24 +88,27 @@ Configured via `eslint.config.js` and Prettier (invoked via npm scripts).
   - `npm run format:check`
 
 ESLint notes:
+
 - Uses `@eslint/js` recommended rules and custom rules (2-space indent, single quotes, semicolons, no unused vars, etc.)
 - Test-specific globals are preconfigured for files under `tests/**/*.js`, but no tests or test runner are currently wired up.
 
 ### Database and migrations (Drizzle ORM)
 
 Drizzle is configured in `drizzle.config.js`:
+
 - Schema: `./src/models/*.js`
 - Output directory: `./drizzle/`
 - Dialect: PostgreSQL
 - Credentials: `process.env.DATABASE_URL`
 
 Common Drizzle CLI commands (via npm scripts):
+
 - Generate migrations based on the schema:
-  - `npm run db:generate`  (runs `drizzle-kit generate`)
+  - `npm run db:generate` (runs `drizzle-kit generate`)
 - Apply migrations to the database defined by `DATABASE_URL`:
-  - `npm run db:migrate`   (runs `drizzle-kit migrate`)
+  - `npm run db:migrate` (runs `drizzle-kit migrate`)
 - Open Drizzle Studio:
-  - `npm run db:studio`    (runs `drizzle-kit studio`)
+  - `npm run db:studio` (runs `drizzle-kit studio`)
 
 The main user schema lives in `src/models/user.model.js`.
 
@@ -138,6 +146,7 @@ The app follows a layered Express architecture, using Node.js ESM and `package.j
 ### Import aliases and directory responsibilities
 
 Import aliases are defined in `package.json` under the `imports` field, all resolving under `src/`:
+
 - `#config/*` → `src/config/*` – infrastructure configuration and integration clients
   - `database.js`: configures Neon and Drizzle based on `DATABASE_URL`; in development it uses the Neon Local HTTP endpoint (`http://neon-local:5432/sql`) and related `neonConfig` flags
   - `logger.js`: central `winston` logger with file transports and optional console transport in non-production environments
@@ -175,6 +184,7 @@ This alias-based layout is important when adding new modules: prefer placing cod
 ### Security and rate limiting
 
 Security concerns are separated into dedicated modules:
+
 - `src/config/arcjet.js` defines a base Arcjet client with:
   - `shield` rule (general protections)
   - `detectBot` rule (with allowances for search engines and preview bots)
@@ -186,6 +196,7 @@ Security concerns are separated into dedicated modules:
 ### Authentication and authorization flow
 
 High-level auth flow for the REST API:
+
 - Sign-up (`POST /api/auth/sign-up`):
   - Validates request with `signUpSchema` (Zod)
   - Uses `createUser` service to persist the user (with bcrypt password hashing)
