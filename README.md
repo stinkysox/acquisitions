@@ -148,3 +148,4 @@ docker compose -f docker-compose.prod.yml down
   - No Neon Local variables; the app connects directly to Neon Cloud.
 
 This fulfills the separation between dev and prod while keeping the application code unchanged and fully driven by environment variables.
+running rest cases
