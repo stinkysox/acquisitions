@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: stinkysocks/acquisitions
 
 jobs:
   docker-build-and-push:
@@ -57,6 +57,6 @@ jobs:
       - name: Docker image summary
         run: |
           echo "## Docker Image Published" >> $GITHUB_STEP_SUMMARY
-          echo "- Image: \\`${{ env.IMAGE_NAME }}\\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Image: \`${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Tags:" >> $GITHUB_STEP_SUMMARY
           echo '${{ steps.meta.outputs.tags }}' | tr ' ' '\n' | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
